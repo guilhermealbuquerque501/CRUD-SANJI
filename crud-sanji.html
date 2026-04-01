@@ -22,10 +22,12 @@
         <label for="ipt_pesquisar">Que comida você quer pesquisar? </label>
         <input type="text" id="ipt_pesquisar">
         <button onclick="pesquisar()">Pesquisar</button>
-        <button onclick="estoque()">estoque</button>
+        
     </div>
     <br>
     <br>
+    <hr>
+    <button onclick="estoque()">estoque</button>
     <hr>
     <div>
         <label for="ipt_nome_antigo">Nome antigo: </label>
@@ -34,96 +36,186 @@
         <input type="text" id="ipt_nome_novo">
         <button onclick="atualizar()">Atualizar nome </button>
     </div>
+    <br>
+    <hr>
+    <div>
+        <label for="">Escreva o nome da comida que quer remover</label>
+        <input type="text" id="ipt_remover">
+        <button onclick="remover()">Deletar</button>
+    </div>
     <div id="resultado">
 
     </div>
 </body>
 
 <script>
-    let lista_comidas = []
+// Array principal que armazena todas as comidas
+let lista_comidas = []
+
+// Função para cadastrar uma nova comida
+function cadastrar() {
+    // Limpa o conteúdo exibido na tela
+    resultado.innerHTML = "";
+
+    // Pega o valor digitado no input
+    let comida_cadastro = ipt_cadastrar.value;
+
+    // Adiciona a comida no array
+    lista_comidas.push(comida_cadastro);
+
+    // Mostra no console para debug
+    console.log(lista_comidas);
+}
 
 
+// Função para verificar quantidade de comidas
+function verificar() {
+    // Limpa o resultado na tela
+    resultado.innerHTML = "";
 
-    function cadastrar() {
-        resultado.innerHTML = "";
-        let comida_cadastro = ipt_cadastrar.value;
+    // Pega o tamanho da lista (quantidade de comidas)
+    let qtd_lista = lista_comidas.length
 
-        lista_comidas.push(comida_cadastro);
+    // Verifica cenários com base na quantidade
+    if (qtd_lista < 3) {
+        resultado.innerHTML = `Desse jeito, o Luffy devora até o navio`
+    }
+    else if (qtd_lista <= 7) {
+        resultado.innerHTML = `O comilão do Luffy não vai deixar sobrar nenhuma comida `
+    }
+    else if (qtd_lista <= 10) {
+        resultado.innerHTML = `Assim, talvez sobre um pouco para a tripulação`;
+    }
+    else if (qtd_lista > 10) {
+        resultado.innerHTML = `Desse jeito vai ter comida para todo mundo e ainda consigo guardar um pouco para a senhorita Nami!`;
+    }
+}
 
-        console.log(lista_comidas);
 
+// Função para pesquisar uma comida no estoque
+function pesquisar() {
+    // Limpa resultado
+    resultado.innerHTML = "";
+
+    // Pega o valor digitado
+    let pesquisa_digitada = (ipt_pesquisar.value)
+
+    // Contador de quantas vezes a comida aparece
+    let count = 0
+
+    // Percorre toda a lista
+    for (let i = 0; i < lista_comidas.length; i++) {
+
+        // Se encontrar a comida digitada
+        if (lista_comidas[i] == pesquisa_digitada) {
+            count++ // aumenta o contador
+        }
     }
 
-
-
-    function verificar() {
-        resultado.innerHTML = "";
-        let qtd_lista = lista_comidas.length
-
-        if (qtd_lista < 3) {
-            resultado.innerHTML = `Desse jeito, o Luffy devora até o navio`
-        }
-        else if (qtd_lista <= 7) {
-            resultado.innerHTML = `O comilão do Luffy não vai deixar sobrar nenhuma comida `
-        }
-        else if (qtd_lista <= 10) {
-            resultado.innerHTML = `Assim, talvez sobre um pouco para a tripulação`;
-        }
-        else if (qtd_lista > 10) {
-            resultado.innerHTML = `Desse jeito vai ter comida para todo mundo e ainda consigo guardar um pouco para a senhorita Nami!`;
-        }
-
+    // Se encontrou pelo menos uma vez
+    if (count > 0) {
+        resultado.innerHTML = `Temos a comida ${pesquisa_digitada} e há ${count} unidade(s) dela`;
     }
+    else {
+        // Se não encontrou
+        resultado.innerHTML = `Alguém vai ter que comprar ${pesquisa_digitada}, tá fazendo falta...`
+    }
+}
 
-    function pesquisar() {
-        resultado.innerHTML = "";
-        let pesquisa_digitada = (ipt_pesquisar.value)
-        let count = 0
 
+// Função para mostrar o estoque agrupado (sem repetir nomes)
+function estoque() {
+
+    // Limpa resultado
+    resultado.innerHTML = "";
+
+    let count = 0;
+
+    // Array para guardar comidas já processadas (evitar repetição)
+    lista_exclusao_rep = [];
+
+    // Percorre lista principal
+    for (let i = 0; i < lista_comidas.length; i++) {
+
+        // Se ainda NÃO foi listada
+        if (!lista.includes(lista_comidas[i])) {
+
+            // Conta quantas vezes essa comida aparece
+            for (let j = 0; j < lista_comidas.length; j++) {
+                if (lista_comidas[i] == lista_comidas[j]) {
+                    count++;
+                }
+            }
+
+            // Marca como já exibida
+            lista_exclusao_rep.push(lista_comidas[i]);
+
+            // Mostra no resultado (com plural ou singular)
+            resultado.innerHTML += `- A comida ${lista_comidas[i]} tem ${count}(${count > 1 ? `unidades` : `unidade`})<br>`;
+        }
+
+        // Reseta contador para próxima comida
+        count = 0;
+    }
+}
+
+
+// Função para atualizar nome de uma comida
+function atualizar() {
+    resultado.innerHTML = "";
+
+    // Pega valores digitados
+    let nome_antigo = (ipt_nome_antigo.value);
+    let nome_novo = (ipt_nome_novo.value);
+
+    // Verifica se existe no array
+    if (lista_comidas.includes(nome_antigo)) {
+        
+        // Percorre lista
         for (let i = 0; i < lista_comidas.length; i++) {
 
-            if (lista_comidas[i] == pesquisa_digitada) {
-                count++
+            // Se encontrar o nome antigo
+            if (lista_comidas[i] == nome_antigo) {
 
+                // Substitui pelo novo nome
+                lista_comidas[i] = nome_novo;
+
+                console.log(lista_comidas);
             }
         }
-        if (count > 0) {
-            resultado.innerHTML = `Temos a comida ${pesquisa_digitada} e há ${count} unidade(s) dela`;
-        }
-        else {
-            resultado.innerHTML = `Alguém vai ter que comprar ${pesquisa_digitada}, tá fazendo falta...`
-        }
 
+        resultado.innerHTML = `A comida '${nome_antigo}' foi alterada para '${nome_novo}'`;
     }
-    function estoque() {
-
-		let mensagem = "";
-		let count = 0ipt_nome_novo;
-		lista_exclusao = [];
-		for(let i = 0; i < lista_comidas.length; i++){
-			if (!lista_exclusao.includes(lista_comidas[i])) {
-
-				for(let j = 0; j < lista_comidas.length; j++){
-					if(lista_comidas[i] == lista_comidas[j]){
-						count ++;
-					}
-				}
-				lista_exclusao.push(lista_comidas[i]);
-				mensagem += `- A comida ${lista_comidas[i]} tem ${count}(${count > 1 ? `unidades` : `unidade`})<br>`;
-			}
-			count = 0;
-		}
-		resultado.innerHTML = mensagem;
+    else {
+        resultado.innerHTML = `A comida '${nome_antigo}' não foi encontrada no estoque.`
     }
-    function atualizar() {
-        let nome_antigo = (ipt_nome_antigo.value)
-        let nome_novo = (ipt_nome_novo.value)
-        if () {
-            
+}
+
+
+// Função para remover uma comida da lista
+function remover() {
+    resultado.innerHTML = ``;
+
+    // Pega valor digitado
+    let remover_comida = ipt_remover.value
+    
+    // Verifica se existe
+    if (lista_comidas.includes(remover_comida)) {
+        
+        // Percorre lista
+        for(let i = 0; i < lista_comidas.length; i++){
+
+            // Se encontrar a comida
+            if (lista_comidas[i] == remover_comida) {
+
+                // Remove 1 item na posição i
+                lista_comidas.splice(i,1)
+
+                // Volta um índice para não pular elemento
+                i--;
+
+                console.log(lista_comidas);
+            }
         }
     }
-
-
-</script>
-
-</html>
+}
