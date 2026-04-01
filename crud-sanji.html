@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio sanji</title>
+</head>
+
+<body>
+    <div>
+        <label for="ipt_cadastrar">Digite uma comida que queira cadastrar: </label>
+        <input type="text" id="ipt_cadastrar">
+        <button onclick="cadastrar()">Cadastrar</button>
+    </div>
+    <hr>
+    <div>
+        <button onclick="verificar()">Verificar Quantidade</button>
+    </div>
+    <hr>
+    <div>
+        <label for="ipt_pesquisar">Que comida você quer pesquisar? </label>
+        <input type="text" id="ipt_pesquisar">
+        <button onclick="pesquisar()">Pesquisar</button>
+        <button onclick="estoque()">estoque</button>
+    </div>
+    <br>
+    <br>
+    <hr>
+    <div>
+        <label for="ipt_nome_antigo">Nome antigo: </label>
+        <input type="text" id="ipt_nome_antigo">
+        <label for="ipt_nome_novo">Nome Novo</label>
+        <input type="text" id="ipt_nome_novo">
+        <button onclick="atualizar()">Atualizar nome </button>
+    </div>
+    <div id="resultado">
+
+    </div>
+</body>
+
+<script>
+    let lista_comidas = []
+
+
+
+    function cadastrar() {
+        resultado.innerHTML = "";
+        let comida_cadastro = ipt_cadastrar.value;
+
+        lista_comidas.push(comida_cadastro);
+
+        console.log(lista_comidas);
+
+    }
+
+
+
+    function verificar() {
+        resultado.innerHTML = "";
+        let qtd_lista = lista_comidas.length
+
+        if (qtd_lista < 3) {
+            resultado.innerHTML = `Desse jeito, o Luffy devora até o navio`
+        }
+        else if (qtd_lista <= 7) {
+            resultado.innerHTML = `O comilão do Luffy não vai deixar sobrar nenhuma comida `
+        }
+        else if (qtd_lista <= 10) {
+            resultado.innerHTML = `Assim, talvez sobre um pouco para a tripulação`;
+        }
+        else if (qtd_lista > 10) {
+            resultado.innerHTML = `Desse jeito vai ter comida para todo mundo e ainda consigo guardar um pouco para a senhorita Nami!`;
+        }
+
+    }
+
+    function pesquisar() {
+        resultado.innerHTML = "";
+        let pesquisa_digitada = (ipt_pesquisar.value)
+        let count = 0
+
+        for (let i = 0; i < lista_comidas.length; i++) {
+
+            if (lista_comidas[i] == pesquisa_digitada) {
+                count++
+
+            }
+        }
+        if (count > 0) {
+            resultado.innerHTML = `Temos a comida ${pesquisa_digitada} e há ${count} unidade(s) dela`;
+        }
+        else {
+            resultado.innerHTML = `Alguém vai ter que comprar ${pesquisa_digitada}, tá fazendo falta...`
+        }
+
+    }
+    function estoque() {
+
+		let mensagem = "";
+		let count = 0ipt_nome_novo;
+		lista_exclusao = [];
+		for(let i = 0; i < lista_comidas.length; i++){
+			if (!lista_exclusao.includes(lista_comidas[i])) {
+
+				for(let j = 0; j < lista_comidas.length; j++){
+					if(lista_comidas[i] == lista_comidas[j]){
+						count ++;
+					}
+				}
+				lista_exclusao.push(lista_comidas[i]);
+				mensagem += `- A comida ${lista_comidas[i]} tem ${count}(${count > 1 ? `unidades` : `unidade`})<br>`;
+			}
+			count = 0;
+		}
+		resultado.innerHTML = mensagem;
+    }
+    function atualizar() {
+        let nome_antigo = (ipt_nome_antigo.value)
+        let nome_novo = (ipt_nome_novo.value)
+        if () {
+            
+        }
+    }
+
+
+</script>
+
+</html>
